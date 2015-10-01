@@ -14,5 +14,5 @@ You must do exactly one of
   * `-l LISTFILE` where `LISTFILE` is a text file containing paths to multiple root files
 
 Optionally, you can do
-  * `-n CLASSNAME` where `CLASSNAME` is the name of the class; defaults to `RootTreeAnalyzer`
-  * `-p PACKAGENAME` where `PACKAGENAME` is the name of the package; defaults to `Common/RootTreeAnalyzer`
+  * `-n CLASSNAME` where `CLASSNAME` defaults to `RootTreeAnalyzer`
+  * `-p PACKAGENAME` where `PACKAGENAME` defaults to `Common/RootTreeAnalyzer`
