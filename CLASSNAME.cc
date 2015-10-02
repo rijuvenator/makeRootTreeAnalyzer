@@ -16,6 +16,7 @@ common::CLASSNAME::CLASSNAME(TChain* chain, std::string outpath)
 }
 
 // looks for "dirname" in internal list; if not found, make it; then cd
+// note: no dirname may be a subset of another dirname
 void common::CLASSNAME::setCurrDir(const std::string &dirname)
 {
 	size_t npos = -1;
@@ -140,8 +141,48 @@ float common::CLASSNAME::intEfficiency(std::string pass, std::string total)
 }
 
 // user-defined virtual functions
-void common::CLASSNAME::preEventLoop() {};
-void common::CLASSNAME::perEventLoop() {};
-void common::CLASSNAME::postEventLoop() {};
-void common::CLASSNAME::setHistProperties(const std::string &name) {};
 void common::CLASSNAME::setGraphProperties(const std::string &name) {};
+
+// sets ranges and cosmetic information for a given histogram based on its name
+void common::CLASSNAME::setHistProperties(const std::string &name) 
+{
+	size_t npos = -1;
+
+	int nBins = 100;
+	float xlow = 0;
+	float xhigh = 100;
+
+	TH1F *currHist = getHist(name);
+	std::string title = "";
+	std::string xtit;
+
+		 if (name.find("One") != npos) { title += "OneHist"; xtit = "[GeV]"; }
+	else if (name.find("Two") != npos) { title += "TwoHist"; xtit = "[GeV]"; }
+
+	currHist->SetBins(nBins,xlow,xhigh);
+	currHist->GetYaxis()->SetTitle("Events");
+	currHist->GetXaxis()->SetTitle(xtit.c_str());
+	currHist->SetNameTitle(name.c_str(),title.c_str());
+}
+
+// runs before tree loop; use to initialize histograms
+void common::CLASSNAME::preEventLoop()
+{
+	std::map<std::string, std::string> histnamesdirs;
+	histnamesdirs =
+	{
+		{ "OneHist", "onedir" },
+		{ "TwoHist", "twodir" }
+	};
+
+	makeHist(histnamesdirs);
+}
+
+// runs after tree loop; use to print statistics and write to files
+void common::CLASSNAME::postEventLoop()
+{
+	getOutputFile()->Write();
+}
+
+// runs once per tree event
+void common::CLASSNAME::perEventLoop() {};
