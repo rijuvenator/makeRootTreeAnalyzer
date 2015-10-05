@@ -143,9 +143,10 @@ sed -e "/SET BRANCH ADDRESSES HERE/ r brfile" -i $PACKAGENAME/src/${CLASSNAME}.c
 rm *file
 rm TempClass.*
 
-rm -f AnalyzerMacro.C 2> /dev/null
+mkdir -p RootMacros
+rm -f RootMacros/AnalyzerMacro.C 2> /dev/null
 
-cat > AnalyzerMacro.C <<EOF
+cat > RootMacros/AnalyzerMacro.C <<EOF
 #include "$PACKAGENAME/interface/${CLASSNAME}.h"
 
 void AnalyzerMacro()
@@ -155,11 +156,14 @@ EOF
 
 for FILE in $FILES
 do
-  echo -e "\tc->Add(\"${FILE}\");" >> AnalyzerMacro.C
+  echo -e "\tc->Add(\"${FILE}\");" >> RootMacros/AnalyzerMacro.C
 done
 
-cat >> AnalyzerMacro.C <<EOF
+cat >> RootMacros/AnalyzerMacro.C <<EOF
 	common::$CLASSNAME analyzer(c,"output.root");
 	analyzer.eventLoop();
 }
 EOF
+
+cp $SCRIPTDIR/Plotter.cc RootMacros/
+cp $SCRIPTDIR/plotterMacro.C RootMacros/
