@@ -198,6 +198,8 @@ class Canvas
 		gr->Draw("C same");
 
 		rat->Draw((option+" same").c_str());
+		rat->SetMarkerColor(kBlack);
+		rat->SetLineColor(kBlack);
 
 	}
 
