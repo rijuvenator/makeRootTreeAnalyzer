@@ -17,7 +17,7 @@ Optionally, you can do
   * `-n CLASSNAME` where `CLASSNAME` defaults to `RootTreeAnalyzer`
   * `-p PACKAGENAME` where `PACKAGENAME` defaults to `Common/RootTreeAnalyzer`
 
-This creates a `PACKAGENAME/CLASSNAME` folder containing
+This creates a `PACKAGENAME` folder containing
   * `BuildFile.xml`
   * `interface/CLASSNAME.h`
   * `src/CLASSNAME.cc`
