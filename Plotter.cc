@@ -47,6 +47,7 @@ class Canvas
 		float ratioFactor;
 		TLegend *leg;
 		TH1F *rat;
+		TGraph *gr;
 
 	// the user calls this constructor
 	Canvas(std::string lumi_="40 pb^{-1} (13 TeV)", bool logy_=0, float ratioFactor_=0, std::string extra_="Preliminary", int cWidth_=800, int cHeight_=600, int font_=42) :
@@ -92,7 +93,8 @@ class Canvas
 	// the user calls this; it "initializes" the legend
 	// lWidth is width as fraction of pad, lHeight is height as fraction of pad, lOffset is offset from corner as fraction of pad
 	// pos can be tr, tl, br, bl for each of the four corners. if it doesn't suit, just grab it and move it
-	void makeLegend(float lWidth=0.125, float lHeight=0.2, std::string pos="tr", float lOffset=0.02)
+	// fontsize defaults to 0.04
+	void makeLegend(float lWidth=0.125, float lHeight=0.2, std::string pos="tr", float lOffset=0.02, float fontsize=0.04)
 	{
 		float tMargin = mainPad->GetTopMargin();
 		float lMargin = mainPad->GetLeftMargin();
@@ -112,7 +114,7 @@ class Canvas
 			leg = new TLegend(1-rMargin-lOffset-lWidth, 1-tMargin-lOffset-lHeight, 1-rMargin-lOffset, 1-tMargin-lOffset);
 		}
 
-		leg->SetTextSize(0.04);
+		leg->SetTextSize(fontsize);
 		leg->SetFillStyle(0);
 	}
 
@@ -191,7 +193,7 @@ class Canvas
 		float up = rat->GetXaxis()->GetXmax();
 		float x[2] = { low, up };
 		float y[2] = { 1, 1 };
-		TGraph *gr = new TGraph(2,x,y);
+		gr = new TGraph(2,x,y);
 		gr->SetLineColor(kRed);
 		gr->SetLineStyle(3);
 		gr->SetLineWidth(2);
