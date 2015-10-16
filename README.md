@@ -24,14 +24,22 @@ This creates a `PACKAGENAME/CLASSNAME` folder containing
   * `src/classes.h`
   * `src/classes_def.xml`
 
-Edit the `setGraphProperties`, `setHistProperties`, `preEventLoop`, `perEventLoop`, and `postEventLoop` functions
+Edit the following functions:
+  * `setGraphProperties`: with a naming system, set TGraph properties
+  * `setHistProperties`: with a naming system, set TH1F properties
+  * `preEventLoop`: runs immediately before tree loop
+  * `perEventLoop`: runs once per loop event after filling tree branches
+  * `postEventLoop`: runs immediately after tree loop
 
 Compile it with `scram b`.
 
+## ROOT Macros and Plotter
+
 This also creates a `RootMacros` folder containing
   * `AnalyzerMacro.C`, a macro for reading and analyzing the `.root` files
-    * run with `root AnalyzerMacro.C`; creates `output.root`
+    * run with `root -l -q AnalyzerMacro.C`; creates `output.root`
   * `Plotter.C`, classes for creating styled plots
     * requires `setStyle` from `.rootlogon.C` from [settings](https://github.com/rijuvenator/settings)
   * `plotterMacro.C`, a macro for configuring the abovementioned Plot and Canvas classes
-    * configure and run with `root plotterMacro.C`; creates a styled canvas
+    * configure and run with `root -l plotterMacro.C`; creates a styled canvas
+    * suitable for batch and `canvas.c->SaveAs("plot.pdf")` with parameters
