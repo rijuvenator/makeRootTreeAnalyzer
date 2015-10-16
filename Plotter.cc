@@ -41,6 +41,7 @@ class Canvas
 		int cWidth;
 		int cHeight;
 		int font;
+		float tsize;
 		std::string lumi;
 		std::string extra;
 		bool logy;
@@ -50,16 +51,17 @@ class Canvas
 		TGraph *gr;
 
 	// the user calls this constructor
-	Canvas(std::string lumi_="40 pb^{-1} (13 TeV)", bool logy_=0, float ratioFactor_=0, std::string extra_="Preliminary", int cWidth_=800, int cHeight_=600, int font_=42) :
+	Canvas(std::string lumi_="40 pb^{-1} (13 TeV)", bool logy_=0, float ratioFactor_=0, std::string extra_="Preliminary", int cWidth_=800, int cHeight_=600, int font_=42, float tsize_=0.05) :
 		cWidth(cWidth_),
 		cHeight(cHeight_),
 		font(font_),
+		tsize(tsize_),
 		lumi(lumi_),
 		extra(extra_),
 		logy(logy_),
 		ratioFactor(ratioFactor_)
 	{
-		setStyle(cWidth,cHeight,font);
+		setStyle(cWidth,cHeight,font,tsize);
 		c = new TCanvas("c","Canvas",cWidth,cHeight);
 
 		prepareCanvas();	
@@ -213,22 +215,24 @@ class Canvas
 		float rMargin = mainPad->GetRightMargin();
 
 		float tOffset = 0.02;
+		float fontsize = 0.04;
+		if (ratioFactor != 0) { fontsize /= (1-ratioFactor); }
 
 		c->cd();
 		mainPad->cd();
 
 		TLatex latex;
 		latex.SetTextFont(font);
-		latex.SetTextSize(0.04);
+		latex.SetTextSize(fontsize);
 		latex.SetTextAlign(31);
 		latex.DrawLatexNDC(1-rMargin,1-tMargin+tOffset,lumi.c_str());
 		latex.SetTextFont(font+20);
-		latex.SetTextSize(0.05);
+		latex.SetTextSize(fontsize*1.25);
 		latex.SetTextAlign(11);
 		latex.DrawLatexNDC(lMargin,1-tMargin+tOffset,"CMS");
 		latex.SetTextFont(font+10);
-		latex.SetTextSize(0.04);
-		latex.DrawLatexNDC(lMargin + .04*cHeight*(1-ratioFactor)*2.75/cWidth,1-tMargin+tOffset,extra.c_str());
+		latex.SetTextSize(fontsize);
+		latex.DrawLatexNDC(lMargin + fontsize*cHeight*(1-ratioFactor)*2.75/cWidth,1-tMargin+tOffset,extra.c_str());
 
 		leg->Draw();
 	}
