@@ -4,7 +4,7 @@
 Requires ROOT  
 Requires `cmsenv` to have been run in the `/src` directory of a `CMSSW_X_Y_Z/` release
 
-To use, navigate to the directory you want the package created and do
+To use, navigate to the directory you want the package created (probably `/src`) and do
 ```
 makeRootTreeAnalyzer.sh -f INPUTFILE -t TREENAME
 ```
@@ -16,3 +16,22 @@ You must do exactly one of
 Optionally, you can do
   * `-n CLASSNAME` where `CLASSNAME` defaults to `RootTreeAnalyzer`
   * `-p PACKAGENAME` where `PACKAGENAME` defaults to `Common/RootTreeAnalyzer`
+
+This creates a `PACKAGENAME/CLASSNAME` folder containing
+  * `BuildFile.xml`
+  * `interface/CLASSNAME.h`
+  * `src/CLASSNAME.cc`
+  * `src/classes.h`
+  * `src/classes_def.xml`
+
+Edit the `setGraphProperties`, `setHistProperties`, `preEventLoop`, `perEventLoop`, and `postEventLoop` functions
+
+Compile it with `scram b`.
+
+This also creates a `RootMacros` folder containing
+  * `AnalyzerMacro.C`, a macro for reading and analyzing the `.root` files
+    * run with `root AnalyzerMacro.C`; creates `output.root`
+  * `Plotter.C`, classes for creating styled plots
+    * requires `setStyle` from `.rootlogon.C` from [settings](https://github.com/rijuvenator/settings)
+  * `plotterMacro.C`, a macro for configuring the abovementioned Plot and Canvas classes
+    * configure and run with `root plotterMacro.C`; creates a styled canvas
