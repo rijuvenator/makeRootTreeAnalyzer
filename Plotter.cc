@@ -205,6 +205,8 @@ class Canvas
 		rat->SetMarkerColor(kBlack);
 		rat->SetLineColor(kBlack);
 
+		ratPad->RedrawAxis();
+
 	}
 
 	// the user calls this last; it draws the lumi text, "CMS", extra text, and legend 
@@ -235,6 +237,7 @@ class Canvas
 		latex.DrawLatexNDC(lMargin + fontsize*cHeight*(1-ratioFactor)*2.75/cWidth,1-tMargin+tOffset,extra.c_str());
 
 		leg->Draw();
+		mainPad->RedrawAxis();
 	}
 
 };
