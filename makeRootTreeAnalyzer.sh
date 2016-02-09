@@ -1,5 +1,18 @@
 #!/bin/bash
 
+	# print help dialog if no arguments, or if first argument is ? or -h, then exit
+if [ $# -eq 0 -o "$1" == "?" -o "$1" == "-h" ]; then 
+	echo -e "\e[1mmakeRootTreeAnalyzer.sh -f INPUTFILE -t TREENAME\e[m"
+	echo -e "Options must include \e[1m-t TREENAME\e[m and exactly one of"
+	echo -e "    \e[1m-f INPUTFILE\e[m   (.root file)"
+	echo -e "    \e[1m-d DIRECTORY\e[m   (directory containing .root files)"
+	echo -e "    \e[1m-l LISTFILE\e[m    (list of .root files)"
+	echo -e "and optionally"
+	echo -e "    \e[1m-c CLASSNAME\e[m   (defaults to RootTreeAnalyzer)"
+	echo -e "    \e[1m-p PACKAGENAME\e[m (defaults to Common/RootTreeAnalyzer)"
+	exit
+fi
+
 	# get script directory
 SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -15,7 +28,7 @@ do
 			INFILELIST="$2"; shift ;;
 		-t)
 			TREENAME="$2"; shift ;;
-		-n)
+		-c)
 			CLASSNAME="$2"; shift ;;
 		-p)
 			PACKAGENAME="$2"; shift ;;
