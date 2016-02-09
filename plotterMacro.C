@@ -15,6 +15,9 @@ void plotterMacro()
 	//
 	// pointers to c, mainPad, ratPad, leg, rat, and gr are available
 	//
+	// Note: If TYPE is a TGraph and option="P", a draw option of "AP" is required for the FIRST plot (first addMainPlot)
+	// So change plot.option, either to "P" after (if option="AP"), or change plot.option to "AP" before and "P" after (if option="P")
+	//
 	TFile *file = TFile::Open("output.root");
 	TH1F *hist1 = (TH1F*) file->Get("hist1");
 	TH1F *hist2 = (TH1F*) file->Get("hist2");
