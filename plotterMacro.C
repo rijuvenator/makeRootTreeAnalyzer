@@ -30,7 +30,7 @@ void plotterMacro()
 	Plot<TH1F> hist1plot(hist1, "hist1LegName", "felp");
 
 	// Step 2
-	Canvas canvas("41.8 pb^{-1} (13 TeV)", true, 1/3., "Preliminary", 800, 700);
+	Canvas canvas("1 fb^{-1} (13 TeV)", true, 1/3., "Preliminary", 800, 700);
 
 	// Step 3
 	canvas.makeLegend();

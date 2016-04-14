@@ -27,6 +27,18 @@ class Plot
 			option(option_)
 		{
 		}
+
+		void scaleTitles(float factor)
+		{
+			plot->GetXaxis()->SetTitleSize(plot->GetXaxis()->GetTitleSize() * factor);
+			plot->GetYaxis()->SetTitleSize(plot->GetYaxis()->GetTitleSize() * factor);
+		}
+
+		void scaleLabels(float factor)
+		{
+			plot->GetXaxis()->SetLabelSize(plot->GetXaxis()->GetLabelSize() * factor);
+			plot->GetYaxis()->SetLabelSize(plot->GetYaxis()->GetLabelSize() * factor);
+		}
 };
 
 // canvas class
