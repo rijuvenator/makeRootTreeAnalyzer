@@ -43,3 +43,7 @@ This also creates a `RootMacros` folder containing
   * `plotterMacro.C`, a macro for configuring the abovementioned Plot and Canvas classes
     * configure and run with `root -l plotterMacro.C`; creates a styled canvas
     * suitable for batch and `canvas.c->SaveAs("plot.pdf")` with parameters
+
+Update: I have ported my Plotter classes to PyROOT.
+  * `Plotter.py` and `plotterMacro.py` work the same way as above.
+  * `Plotter.py` contains the necessary `setStyle` function, since PyROOT does not run `.rootlogon.C`.
