@@ -64,6 +64,9 @@ def setStyle(width_=800, height_=600, font_=42, tsize_=0.04):
 	# stats box
 	style.SetOptStat(0)						# off
 
+	# fit box
+	style.SetOptFit(1)						# on
+
 	# title
 	style.SetOptTitle(0)					# off
 	style.SetTitleFont(font,"")				# helvetica normal
@@ -107,12 +110,12 @@ class Plot:
 		self.option = option_
 
 	def scaleTitles(self, factor):
-		self.plot.GetXaxis().SetTitleSize(plot.GetXaxis().GetTitleSize() * float(factor))
-		self.plot.GetYaxis().SetTitleSize(plot.GetYaxis().GetTitleSize() * float(factor))
+		self.plot.GetXaxis().SetTitleSize(self.plot.GetXaxis().GetTitleSize() * float(factor))
+		self.plot.GetYaxis().SetTitleSize(self.plot.GetYaxis().GetTitleSize() * float(factor))
 
 	def scaleLabels(self, factor):
-		self.plot.GetXaxis().SetLabelSize(plot.GetXaxis().GetLabelSize() * float(factor))
-		self.plot.GetYaxis().SetLabelSize(plot.GetYaxis().GetLabelSize() * float(factor))
+		self.plot.GetXaxis().SetLabelSize(self.plot.GetXaxis().GetLabelSize() * float(factor))
+		self.plot.GetYaxis().SetLabelSize(self.plot.GetYaxis().GetLabelSize() * float(factor))
 
 # canvas class
 # lumi is lumi text (top right), logy is if canvas should be log y scale, ratiofactor is fraction of canvas devoted to ratio plot
@@ -223,6 +226,55 @@ class Canvas:
 
 		if (addToLegend):
 			self.addLegendEntry(plot)
+
+	# the user calls this; sets style for the stats box, if there is one.
+	# owner is the TGraph or TH1 that generated the stats box
+	# lWidth is width as fraction of pad, lHeight is height as fraction of pad, lOffset is offset from corner as fraction of pad
+	# pos can be tr, tl, br, bl for each of the four corners. if it doesn't suit, just grab it and move it
+	# fontsize defaults to 0.03
+	def setFitBoxStyle(self,owner,lWidth=0.3, lHeight=0.15, pos="tl", lOffset=0.05, fontsize=0.03):
+		tMargin = float(self.mainPad.GetTopMargin())
+		lMargin = float(self.mainPad.GetLeftMargin())
+		rMargin = float(self.mainPad.GetRightMargin())
+		bMargin = float(self.mainPad.GetBottomMargin())
+
+		self.c.cd()
+		self.mainPad.cd()
+		self.mainPad.Update()
+
+		sbox = owner.FindObject("stats")
+
+		sbox.SetFillStyle(0)
+		sbox.SetBorderSize(0)
+		sbox.SetTextFont(self.font)
+		sbox.SetTextSize(fontsize)
+
+		if (pos == "tr"):
+			sbox.SetX1NDC(1-rMargin-lOffset-lWidth )
+			sbox.SetY1NDC(1-tMargin-lOffset-lHeight)
+			sbox.SetX2NDC(1-rMargin-lOffset        )
+			sbox.SetY2NDC(1-tMargin-lOffset        )
+		elif (pos == "tl"):
+			sbox.SetX1NDC(  lMargin+lOffset        )
+			sbox.SetY1NDC(1-tMargin-lOffset-lHeight)
+			sbox.SetX2NDC(  lMargin+lOffset+lWidth )
+			sbox.SetY2NDC(1-tMargin-lOffset        )
+		elif (pos == "br"):
+			sbox.SetX1NDC(1-rMargin-lOffset-lWidth )
+			sbox.SetY1NDC(  bMargin+lOffset        )
+			sbox.SetX2NDC(1-rMargin-lOffset        )
+			sbox.SetY2NDC(  bMargin+lOffset+lHeight)
+		elif (pos == "bl"):
+			sbox.SetX1NDC(  lMargin+lOffset        )
+			sbox.SetY1NDC(  bMargin+lOffset		   )
+			sbox.SetX2NDC(  lMargin+lOffset+lWidth )
+			sbox.SetY2NDC(  bMargin+lOffset+lHeight)
+		else:
+			print "Invalid fit box position string; defaulting to top-left"
+			sbox.SetX1NDC(  lMargin+lOffset        )
+			sbox.SetY1NDC(1-tMargin-lOffset-lHeight)
+			sbox.SetX2NDC(  lMargin+lOffset+lWidth )
+			sbox.SetY2NDC(1-tMargin-lOffset        )
 
 	# the user calls this; makes ratio plot given a top hist and a bottom hist
 	# plusminus is the window around 1, i.e. 0.5 means plot from 0.5 to 1.5
